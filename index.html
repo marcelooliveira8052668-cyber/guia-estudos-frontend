@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meu Guia Front-End | MOSS Digital</title>
+
+  <style>
+    /* Eu defino as cores e a aparência geral. */
+    :root {
+      --fundo: #101827;
+      --card: #1c293b;
+      --texto: #f4f7fb;
+      --destaque: #38bdf8;
+      --borda: #34465e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 35px 18px;
+      background: #172438;
+    }
+
+    h1 { color: var(--destaque); }
+
+    header p { color: #cbd5e1; }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      overflow-x: auto;
+      background: #0b1220;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    button {
+      background: var(--destaque);
+      color: #07131f;
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    nav button { flex: 1; }
+
+    main {
+      max-width: 950px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .secao { display: none; }
+    .secao.ativa { display: block; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 15px 0;
+    }
+
+    .card h3 {
+      color: var(--destaque);
+      margin-top: 0;
+    }
+
+    pre {
+      background: #080f1c;
+      padding: 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    code {
+      font-family: Consolas, monospace;
+      white-space: pre;
+    }
+
+    .busca {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--borda);
+      background: #fff;
+      font-size: 16px;
+    }
+
+    .opcao {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin: 8px 0;
+      background: #334155;
+      color: white;
+    }
+
+    .correta { background: #15803d; }
+    .errada { background: #b91c1c; }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Eu crio o cabeçalho do meu guia. -->
+  <header>
+    <h1>📘 Meu Guia Front-End</h1>
+    <p>HTML • CSS • JavaScript • React</p>
+    <p>Revisão dos conhecimentos do SENAI</p>
+    <strong>MOSS Digital</strong>
+  </header>
+
+  <!-- Eu crio o menu de navegação. -->
+  <nav>
+    <button onclick="mostrar('html')">HTML</button>
+    <button onclick="mostrar('css')">CSS</button>
+    <button onclick="mostrar('js')">JavaScript</button>
+    <button onclick="mostrar('react')">React</button>
+    <button onclick="mostrar('quiz')">Quiz</button>
+  </nav>
+
+  <main>
+    <!-- Eu permito pesquisar os comandos. -->
+    <input
+      class="busca"
+      id="busca"
+      placeholder="🔎 Pesquisar comando..."
+      oninput="pesquisar()"
+    >
+
+    <!-- Eu preparo as áreas de conteúdo. -->
+    <section id="html" class="secao ativa">
+      <h2>HTML — Estrutura</h2>
+      <div id="conteudo-html"></div>
+    </section>
+
+    <section id="css" class="secao">
+      <h2>CSS — Aparência</h2>
+      <div id="conteudo-css"></div>
+    </section>
+
+    <section id="js" class="secao">
+      <h2>JavaScript — Lógica</h2>
+      <div id="conteudo-js"></div>
+    </section>
+
+    <section id="react" class="secao">
+      <h2>React — Componentes</h2>
+      <p>Os exemplos React são para estudo.
+        Para executá-los, utilize um projeto React.</p>
+      <div id="conteudo-react"></div>
+    </section>
+
+    <!-- Eu crio a área de perguntas. -->
+    <section id="quiz" class="secao">
+      <h2>Teste seus conhecimentos</h2>
+      <div id="perguntas"></div>
+      <h3 id="resultado"></h3>
+      <button onclick="iniciarQuiz()">Refazer quiz</button>
+    </section>
+  </main>
+
+  <footer>
+    MOSS Digital • Guia pessoal de programação
+  </footer>
+
+  <script>
+    // Eu armazeno os conteúdos em um objeto.
+    const estudos = {
+      html: [
+        ["DOCTYPE", "Informa que o documento usa HTML5.",
+         "<!DOCTYPE html>"],
+        ["html", "Elemento principal da página.",
+         "<html lang='pt-BR'></html>"],
+        ["head", "Contém configurações da página.",
+         "<head><title>Meu Site</title></head>"],
+        ["body", "Contém o conteúdo visível.",
+         "<body><h1>Olá!</h1></body>"],
+        ["h1 até h6", "Representam títulos e subtítulos.",
+         "<h1>Título</h1>"],
+        ["p", "Cria um parágrafo.",
+         "<p>Meu primeiro site.</p>"],
+        ["a", "Cria um link.",
+         "<a href='https://example.com'>Visitar</a>"],
+        ["img", "Exibe uma imagem.",
+         "<img src='foto.jpg' alt='Descrição'>"],
+        ["div", "Agrupa elementos.",
+         "<div>Conteúdo</div>"],
+        ["section", "Cria uma seção temática.",
+         "<section><h2>Serviços</h2></section>"],
+        ["header", "Define o cabeçalho.",
+         "<header>Minha empresa</header>"],
+        ["footer", "Define o rodapé.",
+         "<footer>Contato</footer>"],
+        ["nav", "Agrupa links de navegação.",
+         "<nav><a href='#inicio'>Início</a></nav>"],
+        ["main", "Define o conteúdo principal.",
+         "<main>Conteúdo</main>"],
+        ["form", "Cria um formulário.",
+         "<form><input><button>Enviar</button></form>"],
+        ["input", "Cria um campo de entrada.",
+         "<input type='text' placeholder='Nome'>"],
+        ["button", "Cria um botão.",
+         "<button>Clique aqui</button>"],
+        ["ul e li", "Criam listas não ordenadas.",
+         "<ul><li>HTML</li><li>CSS</li></ul>"],
+        ["script", "Inclui JavaScript.",
+         "<script src='app.js'><" + "/script>"],
+        ["link", "Vincula uma folha de estilos.",
+         "<link rel='stylesheet' href='style.css'>"]
+      ],
+
+      css: [
+        ["color", "Define a cor do texto.",
+         "h1 { color: blue; }"],
+        ["background-color", "Define a cor do fundo.",
+         "body { background-color: #111827; }"],
+        ["font-size", "Define o tamanho da fonte.",
+         "p { font-size: 18px; }"],
+        ["font-family", "Escolhe a família da fonte.",
+         "body { font-family: Arial; }"],
+        ["margin", "Define o espaço externo.",
+         "div { margin: 20px; }"],
+        ["padding", "Define o espaço interno.",
+         "div { padding: 15px; }"],
+        ["border", "Cria uma borda.",
+         "div { border: 1px solid white; }"],
+        ["border-radius", "Arredonda os cantos.",
+         "button { border-radius: 10px; }"],
+        ["width", "Define a largura.",
+         "div { width: 100%; }"],
+        ["height", "Define a altura.",
+         "div { height: 200px; }"],
+        ["display flex", "Organiza elementos em uma dimensão.",
+         ".linha { display: flex; }"],
+        ["display grid", "Organiza linhas e colunas.",
+         ".grade { display: grid; grid-template-columns: 1fr 1fr; }"],
+        ["gap", "Define espaços entre itens.",
+         ".grade { gap: 15px; }"],
+        ["justify-content", "Alinha itens no eixo principal.",
+         ".linha { display: flex; justify-content: center; }"],
+        ["align-items", "Alinha itens no eixo transversal.",
+         ".linha { display: flex; align-items: center; }"],
+        ["position", "Controla o posicionamento.",
+         ".menu { position: sticky; top: 0; }"],
+        [":hover", "Aplica estilos ao passar o cursor.",
+         "button:hover { background: orange; }"],
+        ["transition", "Suaviza alterações visuais.",
+         "button { transition: background 0.3s; }"],
+        ["@media", "Adapta o layout conforme a tela.",
+         "@media (max-width: 600px) { h1 { font-size: 22px; } }"]
+      ],
+
+      js: [
+        ["const", "Declara uma variável sem reatribuição.",
+         "const empresa = 'MOSS Digital';"],
+        ["let", "Declara uma variável que pode mudar.",
+         "let contador = 0;\ncontador++;"],
+        ["var", "Forma antiga de declarar variáveis.",
+         "var nome = 'Marcelo';"],
+        ["if", "Executa código quando uma condição é verdadeira.",
+         "if (idade >= 18) {\n  console.log('Adulto');\n}"],
+        ["else", "Executa o caminho alternativo.",
+         "if (ativo) {\n  console.log('Sim');\n} else {\n  console.log('Não');\n}"],
+        ["else if", "Testa outra condição.",
+         "if (nota >= 7) {\n  console.log('Aprovado');\n} else if (nota >= 5) {\n  console.log('Recuperação');\n}"],
+        ["for", "Repete instruções.",
+         "for (let i = 0; i < 3; i++) {\n  console.log(i);\n}"],
+        ["while", "Repete enquanto a condição for verdadeira.",
+         "let i = 0;\nwhile (i < 3) {\n  i++;\n}"],
+        ["for...of", "Percorre os valores de uma coleção.",
+         "for (const site of sites) {\n  console.log(site);\n}"],
+        ["array", "Armazena uma lista de valores.",
+         "const sites = ['Loja', 'Salão', 'Barbearia'];"],
+        ["object", "Agrupa propriedades e valores.",
+         "const cliente = { nome: 'Ana', ativo: true };"],
+        ["function", "Cria uma função reutilizável.",
+         "function somar(a, b) {\n  return a + b;\n}"],
+        ["return", "Retorna o resultado de uma função.",
+         "function dobro(n) {\n  return n * 2;\n}"],
+        ["arrow function", "Sintaxe curta para funções.",
+         "const dobro = n => n * 2;"],
+        ["console.log", "Exibe dados no console.",
+         "console.log('Olá, mundo!');"],
+        ["alert", "Mostra uma mensagem.",
+         "alert('Bem-vindo!');"],
+        ["prompt", "Solicita uma informação.",
+         "const nome = prompt('Seu nome?');"],
+        ["addEventListener", "Escuta eventos de elementos.",
+         "botao.addEventListener('click', salvar);"],
+        ["querySelector", "Seleciona o primeiro elemento correspondente.",
+         "const titulo = document.querySelector('h1');"],
+        ["getElementById", "Seleciona pelo identificador.",
+         "const campo = document.getElementById('nome');"],
+        ["JSON.stringify", "Converte um valor para texto JSON.",
+         "JSON.stringify({ nome: 'Ana' });"],
+        ["JSON.parse", "Converte texto JSON em valor JavaScript.",
+         "JSON.parse('{\"nome\":\"Ana\"}');"],
+        ["localStorage", "Armazena dados no navegador.",
+         "localStorage.setItem('tema', 'escuro');"],
+        ["fetch", "Faz requisições pela rede.",
+         "fetch('/produtos.json');"],
+        ["async", "Declara uma função assíncrona.",
+         "async function carregar() {\n  return 10;\n}"],
+        ["await", "Aguarda uma Promise.",
+         "const resposta = await fetch('/produtos.json');"],
+        ["try catch", "Captura e trata erros.",
+         "try {\n  JSON.parse('invalido');\n} catch (erro) {\n  console.log(erro);\n}"],
+        ["map", "Transforma cada item de um array.",
+         "const dobro = [1, 2, 3].map(n => n * 2);"],
+        ["filter", "Seleciona itens que passam em um teste.",
+         "const pares = [1, 2, 3, 4].filter(n => n % 2 === 0);"],
+        ["find", "Encontra o primeiro item correspondente.",
+         "const item = [5, 8, 12].find(n => n > 6);"],
+        ["push", "Adiciona um item ao final.",
+         "sites.push('Pizzaria');"],
+        ["pop", "Remove o último item.",
+         "sites.pop();"],
+        ["length", "Retorna o tamanho da lista ou string.",
+         "console.log(sites.length);"],
+        ["=== e !==", "Comparam valores e tipos.",
+         "console.log(5 === '5'); // false"],
+        ["&& e ||", "Representam E e OU lógicos.",
+         "if (ativo && pago) {\n  console.log('Liberado');\n}"],
+        ["DOM", "Representa a estrutura da página.",
+         "document.querySelector('h1').textContent = 'Novo título';"]
+      ],
+
+      react: [
+        ["import", "Importa funções e componentes.",
+         "import { useState } from 'react';"],
+        ["export default", "Exporta o valor principal do arquivo.",
+         "export default App;"],
+        ["componente", "Cria uma parte reutilizável da interface.",
+         "function App() {\n  return <h1>Olá!</h1>;\n}"],
+        ["JSX", "Permite escrever elementos na sintaxe do React.",
+         "const titulo = <h1>MOSS Digital</h1>;"],
+        ["props", "Recebe dados de outro componente.",
+         "function Saudacao({ nome }) {\n  return <h1>Olá, {nome}</h1>;\n}"],
+        ["useState", "Armazena estado de um componente.",
+         "const [numero, setNumero] = useState(0);"],
+        ["useEffect", "Sincroniza o componente com sistemas externos.",
+         "useEffect(() => {\n  document.title = 'MOSS';\n}, []);"],
+        ["onClick", "Trata o clique em um elemento.",
+         "<button onClick={salvar}>Salvar</button>"],
+        ["onChange", "Trata mudanças em campos.",
+         "<input onChange={e => setNome(e.target.value)} />"],
+        ["onSubmit", "Trata o envio de formulários.",
+         "<form onSubmit={enviar}>...</form>"],
+        ["useNavigate", "Permite navegar por código no React Router.",
+         "const navegar = useNavigate();\nnavegar('/produtos');"],
+        ["useParams", "Lê parâmetros da rota.",
+         "const { id } = useParams();"],
+        ["Link", "Cria links internos no React Router.",
+         "<Link to='/produtos'>Produtos</Link>"],
+        ["BrowserRouter", "Fornece contexto de navegação.",
+         "<BrowserRouter><App /></BrowserRouter>"],
+        ["Routes e Route", "Definem quais componentes aparecem por rota.",
+         "<Routes><Route path='/' element={<Home />} /></Routes>"],
+        ["key", "Identifica elementos renderizados em listas.",
+         "sites.map(s => <p key={s.id}>{s.nome}</p>)"],
+        ["npm install", "Instala dependências do projeto.",
+         "npm install"],
+        ["npm run dev", "Inicia o servidor de desenvolvimento.",
+         "npm run dev"],
+        ["npm run build", "Gera os arquivos de produção.",
+         "npm run build"]
+      ]
+    };
+
+    // Eu transformo caracteres especiais em texto seguro.
+    function escapar(texto) {
+      return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // Eu mostro os conteúdos de cada tecnologia.
+    function renderizar(termo = "") {
+      for (const area of ["html", "css", "js", "react"]) {
+        const destino = document.getElementById("conteudo-" + area);
+
+        const lista = estudos[area].filter(item =>
+          item.join(" ").toLowerCase().includes(termo.toLowerCase())
+        );
+
+        destino.innerHTML = lista.map(item => `
+          <article class="card">
+            <h3>${escapar(item[0])}</h3>
+            <p>${escapar(item[1])}</p>
+            <pre><code>${escapar(item[2])}</code></pre>
+          </article>
+        `).join("") || "<p>Nenhum comando encontrado.</p>";
+      }
+    }
+
+    // Eu alterno entre as seções do guia.
+    function mostrar(id) {
+      document.querySelectorAll(".secao").forEach(secao => {
+        secao.classList.remove("ativa");
+      });
+
+      document.getElementById(id).classList.add("ativa");
+
+      document.getElementById("busca").style.display =
+        id === "quiz" ? "none" : "block";
+    }
+
+    // Eu procuro comandos em todas as categorias.
+    function pesquisar() {
+      const termo = document.getElementById("busca").value;
+      renderizar(termo);
+    }
+
+    // Eu preparo as perguntas do quiz.
+    const questoes = [
+      {
+        pergunta: "Qual comando testa uma condição?",
+        opcoes: ["for", "if", "const"],
+        certa: 1
+      },
+      {
+        pergunta: "Qual estrutura guarda uma lista?",
+        opcoes: ["array", "return", "function"],
+        certa: 0
+      },
+      {
+        pergunta: "Qual propriedade muda a cor do texto?",
+        opcoes: ["padding", "color", "margin"],
+        certa: 1
+      },
+      {
+        pergunta: "Qual Hook guarda estado no React?",
+        opcoes: ["useEffect", "useParams", "useState"],
+        certa: 2
+      },
+      {
+        pergunta: "Qual método filtra elementos?",
+        opcoes: ["filter", "push", "map"],
+        certa: 0
+      },
+      {
+        pergunta: "Qual tag HTML cria um botão?",
+        opcoes: ["<div>", "<button>", "<p>"],
+        certa: 1
+      }
+    ];
+
+    // Eu guardo as respostas do estudante.
+    let respostas = {};
+
+    // Eu monto o quiz na tela.
+    function iniciarQuiz() {
+      respostas = {};
+      document.getElementById("resultado").textContent = "";
+
+      document.getElementById("perguntas").innerHTML =
+        questoes.map((q, i) => `
+          <div class="card" id="questao-${i}">
+            <h3>${i + 1}. ${escapar(q.pergunta)}</h3>
+            ${q.opcoes.map((opcao, j) => `
+              <button class="opcao"
+                onclick="responder(${i}, ${j})">
+                ${escapar(opcao)}
+              </button>
+            `).join("")}
+          </div>
+        `).join("");
+    }
+
+    // Eu verifico se a resposta está correta.
+    function responder(indice, escolha) {
+      if (respostas[indice] !== undefined) return;
+
+      respostas[indice] = escolha;
+
+      const botoes = document.querySelectorAll(
+        "#questao-" + indice + " .opcao"
+      );
+
+      botoes.forEach((botao, i) => {
+        botao.disabled = true;
+
+        if (i === questoes[indice].certa) {
+          botao.classList.add("correta");
+        } else if (i === escolha) {
+          botao.classList.add("errada");
+        }
+      });
+
+      // Eu apresento a pontuação quando terminar.
+      if (Object.keys(respostas).length === questoes.length) {
+        const acertos = questoes.filter(
+          (q, i) => respostas[i] === q.certa
+        ).length;
+
+        document.getElementById("resultado").textContent =
+          `Você acertou ${acertos} de ${questoes.length} perguntas!`;
+      }
+    }
+
+    // Eu inicializo o guia.
+    renderizar();
+    iniciarQuiz();
+  </script>
+</body>
+</html>
